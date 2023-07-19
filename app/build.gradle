@@ -1,0 +1,68 @@
+
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    implementation 'org.slf4j:slf4j-api:1.7.32'
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+}
+
+test {
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+    }
+}
+
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(11)
+    }
+}
+
+application {
+    mainClass = 'example.App'
+}
+
+
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+task taskA {
+    doLast {
+        println 'Running taskA'
+    }
+}
+
+task taskB {
+    dependsOn taskA
+    doLast {
+        println 'Running taskB'
+    }
+}
+
+task taskC {
+    doLast {
+        println 'Running taskC'
+    }
+}
+
+task taskD {
+    doLast {
+        println 'Running taskD'
+    }
+}
+
+taskC.mustRunAfter taskD
+
